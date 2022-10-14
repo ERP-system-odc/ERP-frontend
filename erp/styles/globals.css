@@ -215,9 +215,11 @@ p {
   background: var(--clr-white);
   max-width: var(--fixed-width);
   margin: 0 auto;
+  height: 20rem;
   margin-bottom: 4rem;
   padding: 1rem 2rem;
-  border-radius: var(--radius);
+  /* border-radius: var(--radius); */
+  border-radius: 1.5rem;
 }
 .form input {
   background: var(--clr-grey-10);
