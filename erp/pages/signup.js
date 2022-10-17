@@ -45,10 +45,23 @@ const Signup = () => {
     .then(data => {
         //handle data
         console.log(data);
+        
+        if( data.statusText === "Bad Request"){
+          alert("Incorrect Data")
+        }
+        else Router.push("/");
       })
       .catch(error => {
         //handle error
       });
+      
+      setSignin({
+        fullname: "",
+        email: "",
+        phonenumber: "",
+        password: "",
+        confirmpassword: "",
+      })
     //   .then((response) => response.json())
     //   .then((result) => {
     //     if (result.status === 200) {
@@ -70,8 +83,9 @@ const Signup = () => {
       <Head>
         <title>ERP System</title>
       </Head>
-      <article>
-        <form className="form" onSubmit={handleSubmit}>
+      <article >
+        <form className="form" onSubmit={handleSubmit} style={{marginTop:"35px"}}>
+          <h3>Create new account</h3>
           <div className="form-control">
             <label htmlFor="fullname">fullname : </label>
             <input
@@ -90,6 +104,7 @@ const Signup = () => {
               type="email"
               id="email"
               name="email"
+              required
               value={signin.email}
               onChange={handleChange}
             />
@@ -100,6 +115,7 @@ const Signup = () => {
               type="number"
               id="phonenumber"
               name="phonenumber"
+              required
               value={signin.phonenumber}
               onChange={handleChange}
             />
@@ -110,6 +126,7 @@ const Signup = () => {
               type="password"
               id="password"
               name="password"
+              required
               value={signin.password}
               onChange={handleChange}
             />
@@ -120,11 +137,12 @@ const Signup = () => {
               type="password"
               id="confirmpassword"
               name="confirmpassword"
+              required
               value={signin.confirmpassword}
               onChange={handleChange}
             />
           </div>
-          <button type="Submit">sign in</button>
+          <button type="Submit" className="btn">CREATE</button>
         </form>
       </article>
     </>
