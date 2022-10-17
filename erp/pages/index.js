@@ -36,11 +36,19 @@ const index = () => {
         //handle data
         console.log(data);
         console.log(data.phonenumber);
-        Router.push('/profile')
+        console.log(data.credentials.fullname)
+        const name=data.credentials.fullname;
+        const phone=data.credentials.phonenumber;
+        Router.push({
+          pathname: '/profile',
+          query: { name, phone}
+      })
       })
       .catch(error => {
         //handle error
       });
+
+      setLogin({ email: "", password: "" })
     //Pass(login)
     // loginUser(email, password).then(()=>{
     //   Router.push('/profile')
@@ -53,8 +61,12 @@ const index = () => {
         <title>ERP System</title>
         
       </Head>
-      <article>
-        <form className="form" onSubmit={handleSubmit}>
+      <article className="frontPage" style={{marginRight:"0"}}>
+        <div>
+          <img src="frontpage.png"/>
+        </div>
+        <form className="form" style={{marginLeft:"0"}} onSubmit={handleSubmit} >
+          <h2>ERP System</h2>
           <div className="form-control">
             <label htmlFor="email">Email : </label>
             <input
@@ -73,11 +85,13 @@ const index = () => {
               type="password"
               id="password"
               name="password"
+              required
               value={login.password}
               onChange={handleChange}
             />
           </div>
-          <button type="Submit">sign in</button>
+          <button type="Submit" className="btn">sign in</button>
+          <p>Dont have an account <Link href="/signup">Sign Up</Link></p>
         </form>
       </article>
     </>
