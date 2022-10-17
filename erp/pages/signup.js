@@ -2,46 +2,78 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Router from "next/router";
-import { loginUser } from "../lib/auth";
+import { signinUser } from "../lib/auth";
 
 const Signup = () => {
   const [signin, setSignin] = useState({
     fullname: "",
     email: "",
     phonenumber: "",
-    role: "",
     password: "",
-    confirmpassword: ""
+    confirmpassword: "",
   });
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setSignin({ ...login, [name]: value });
+    setSignin({ ...signin, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(signin);
 
-    const { username, email}= signin;
-
-    //Pass(login)
-    loginUser(username, email).then(()=>{
-      Router.push('/profile')
+    //const { signin }= signin;
+    e.preventDefault();
+    console.log(JSON.stringify({
+        fullname: signin.fullname,
+        email: signin.email,
+        phonenumber: signin.phonenumber,
+        password: signin.password,
+        confirmpassword: signin.confirmpassword
+      }))
+    fetch("http://localhost:5001/api/auth/signup", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        fullname: signin.fullname,
+        email: signin.email,
+        phonenumber: signin.phonenumber,
+        password: signin.password,
+        confirmpassword: signin.confirmpassword
+      })
     })
-   
+    .then(data => {
+        //handle data
+        console.log(data);
+      })
+      .catch(error => {
+        //handle error
+      });
+    //   .then((response) => response.json())
+    //   .then((result) => {
+    //     if (result.status === 200) {
+    //       alert("You are logged in.");
+    //     //   this.goToMain();
+    //     } else if(result.status === 400){
+    //         console.log(result)
+    //       alert("Please check your login information.");
+    //     }
+    //   });
+    //Pass(login)
+    // signinUser(signin).then(()=>{
+    //   Router.push('/profile')
+    // })
   };
 
   return (
     <>
       <Head>
         <title>ERP System</title>
-        
       </Head>
       <article>
         <form className="form" onSubmit={handleSubmit}>
           <div className="form-control">
-            <label htmlFor="firstName">username : </label>
+            <label htmlFor="fullname">fullname : </label>
             <input
               type="text"
               id="fullname"
@@ -63,7 +95,7 @@ const Signup = () => {
             />
           </div>
           <div className="form-control">
-            <label htmlFor="phonenumber">email : </label>
+            <label htmlFor="phonenumber">phone : </label>
             <input
               type="number"
               id="phonenumber"
