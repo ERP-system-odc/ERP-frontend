@@ -13,31 +13,33 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import MuiPhoneInput from 'material-ui-phone-number';
+// import MuiPhoneInput from 'material-ui-phone-number';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const Register = () => {
   const formik = useFormik({
     initialValues: {
+      full_name: '',
       email: '',
-      fullname: '',
-      phonenumber:'+251',
+      
+      phone_number:'+251',
       password: '',
-      confirmpassword: '',
-      policy: false
+      confirm_password: '',
+      // policy: false
     },
     validationSchema: Yup.object({
+      full_name: Yup
+        .string()
+        .max(255)
+        .required('Full name is required'),
       email: Yup
         .string()
         .email('Must be a valid email')
         .max(255)
         .required(
           'Email is required'),
-      fullname: Yup
-        .string()
-        .max(255)
-        .required('Full name is required'),
-      phonenumber: Yup
+      
+      phone_number: Yup
         .string()
         .max(255)
         .required('Phone Number is required'),
@@ -45,16 +47,16 @@ const Register = () => {
         .string()
         .max(255)
         .required('Password is required'),
-        confirmpassword: Yup
+        confirm_password: Yup
         .string()
         .max(255)
         .required('Please confirmPassword '),
-      policy: Yup
-        .boolean()
-        .oneOf(
-          [true],
-          'This field must be checked'
-        )
+      // policy: Yup
+      //   .boolean()
+      //   .oneOf(
+      //     [true],
+      //     'This field must be checked'
+      //   )
     }),
     // onSubmit: () => {
     //   Router
@@ -68,15 +70,17 @@ const Register = () => {
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify(values, null, 2)
           })
+      
       .then((response) => response.json())
       .then(data => {
           //handle data
           console.log(data);
           
-        if( data.message !== "User signup is succcessful"){
-          alert("Incorrect Data")
+        if( data.status == 200){
+          Router.push("/");
+         
         }
-        else Router.push("/");
+        else alert("Incorrect Data");
         })
         .catch(error => {
           //handle error
@@ -120,15 +124,15 @@ const Register = () => {
               </Typography>
             </Box>
             <TextField
-              error={Boolean(formik.touched.fullname && formik.errors.fullname)}
+              error={Boolean(formik.touched.full_name && formik.errors.full_name)}
               fullWidth
-              helperText={formik.touched.fullname && formik.errors.fullname}
+              helperText={formik.touched.full_name && formik.errors.full_name}
               label="Full Name"
               margin="normal"
-              name="fullname"
+              name="full_name"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
-              value={formik.values.fullname}
+              value={formik.values.full_name}
               variant="outlined"
             />
             <TextField
@@ -145,17 +149,17 @@ const Register = () => {
               variant="outlined"
             />
             <TextField 
-              error={Boolean(formik.touched.phonenumber && formik.errors.phonenumber)}
-              helperText={formik.touched.phonenumber && formik.errors.phonenumber}
+              error={Boolean(formik.touched.phone_number && formik.errors.phone_number)}
+              helperText={formik.touched.phone_number && formik.errors.phone_number}
               // defaultCountry={'et'}
-              name="phonenumber"
+              name="phone_number"
               margin="normal"
               label="Phone Number"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               fullWidth
               type="tel"
-              value={formik.values.phonenumber}
+              value={formik.values.phone_number}
               variant="outlined"
             />
             <TextField
@@ -172,19 +176,19 @@ const Register = () => {
               variant="outlined"
             />
              <TextField
-              error={Boolean(formik.touched.confirmpassword && formik.errors.confirmpassword)}
+              error={Boolean(formik.touched.confirm_password && formik.errors.confirm_password)}
               fullWidth
-              helperText={formik.touched.confirmpassword && formik.errors.confirmpassword}
+              helperText={formik.touched.confirm_password && formik.errors.confirm_password}
               label="Confirm Password"
               margin="normal"
-              name="confirmpassword"
+              name="confirm_password"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               type="password"
-              value={formik.values.confirmpassword}
+              value={formik.values.confirm_password}
               variant="outlined"
             />
-            <Box
+            {/* <Box
               sx={{
                 alignItems: 'center',
                 display: 'flex',
@@ -215,7 +219,7 @@ const Register = () => {
                   </Link>
                 </NextLink>
               </Typography>
-            </Box>
+            </Box> */}
             {Boolean(formik.touched.policy && formik.errors.policy) && (
               <FormHelperText error>
                 {formik.errors.policy}
@@ -240,7 +244,7 @@ const Register = () => {
               Have an account?
               {' '}
               <NextLink
-                href="/login"
+                href="/"
                 passHref
               >
                 <Link
