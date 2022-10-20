@@ -45,7 +45,7 @@ const Register = () => {
       console.log(JSON.stringify(values, null, 2));
       console.log(id)
       fetch(
-        `http://localhost:5000/api/firmDefinition/defineFirm/${id}`,
+        "http://localhost:5000/api/firmDefinition/defineFirm/",
         {
           method: "POST",
           headers: {
