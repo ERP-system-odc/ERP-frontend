@@ -47,19 +47,19 @@ const Login = () => {
           // WIndow.localStorage.setItem("token", data["access-token"])
           sessionStorage.setItem("token", data["access-token"]);
           console.log(sessionStorage.getItem("token"));
-          const id= data.credentials.id;
-          console.log(id)
+          const person= data.credentials;
+
           const name = data.credentials.full_name;
           const phone = data.credentials.phone_number;
           if (data.credentials.is_starter == true) {
             Router.push({
               pathname: "/firm",
-              query: { id, name, phone },
+              query: { person, name, phone },
             });
           } else {
             Router.push({
               pathname: "/profile",
-              query: { id,name, phone },
+              query: { person, name, phone },
             });
           }
         })
@@ -84,6 +84,7 @@ const Login = () => {
           minHeight: "100%",
         }}
       >
+        {/* <img src="/a.jpg" maxWidth="300"/> */}
         <Container maxWidth="sm">
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ my: 3 }}>
