@@ -26,7 +26,7 @@ const items = [
     title: 'Dashboard'
   },
   {
-    href: '/customers',
+    href: '/items',
     icon: (<CategoryIcon fontSize="small" />),
     title: 'Items'
   },
