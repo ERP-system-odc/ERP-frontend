@@ -1,21 +1,11 @@
-import axios from 'axios';
+import { Auth } from '@zalter/identity-js';
 
-axios.defaults.withCredentials = true;
+const noop = () => {};
 
-export const loginUser = async (email, password)=>{
-    const { data }= await axios.post('http://localhost:5001/api/auth/signin',{email, password});
-    console.log(data);
-    console.log(data.email)
-    
-}
-export const getUserProfile = async ()=>{
-    const {data} = await axios.get('http://localhost:5001/api/auth/signin');
-    return data;
-}
+export const ENABLE_AUTH = process.env.NEXT_PUBLIC_ENABLE_ZALTER_AUTH === 'true';
 
-
-export const signinUser = async (signin)=>{
-    const { data }= await axios.post('http://localhost:5001/api/auth/signup',{signin});
-    console.log(data);
-    
-} 
+export const auth = ENABLE_AUTH
+  ? new Auth({
+    projectId: process.env.NEXT_PUBLIC_ZALTER_PROJECT_ID
+  })
+  : noop();
