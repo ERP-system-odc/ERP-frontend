@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
 import { format } from "date-fns";
@@ -33,9 +33,26 @@ export const getStaticProps = async () => {
 };
 
 export const ItemsListResults = ({ items }) => {
-  const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
+  const [item1, setItem1] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/inventory/manage", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+     
+    })
+    .then(response => response.json())
+        
+    .then(data => setItem1(data.data))
+    
+  },[])
+
+
 
   const handleLimitChange = (event) => {
     setLimit(event.target.value);
@@ -45,17 +62,9 @@ export const ItemsListResults = ({ items }) => {
     setPage(newPage);
   };
 
-  async function getResponse() {
-    const response = await fetch("http://localhost:5000/api/inventory/manage", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-      body: JSON.stringify(values, null, 2),
-    });
-    const dataItem = await response.json(); // Extracting data as a JSON Object from the response
-  }
+
+
+
 
   const data = [
     {
@@ -119,15 +128,17 @@ export const ItemsListResults = ({ items }) => {
                 <TableCell>inventory_price</TableCell>
                 <TableCell>Minimum No. to get Notified</TableCell>
                 <TableCell>inventory_quantity</TableCell>
-                <TableCell>inventory_expense</TableCell>
+           
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map(val => (
+              {
+              
+              item1.map(val => (
                 <TableRow
                   hover
-                  key={val.inv_id}
-                  selected={selectedCustomerIds.indexOf(val.inv_id) !== -1}
+                  key={val.id}
+                 
                 >
                   <TableCell>
                     <Box
@@ -144,15 +155,15 @@ export const ItemsListResults = ({ items }) => {
                   <TableCell>{val.inventory_price}</TableCell>
 
                   <TableCell>{val.least_critical_amount}</TableCell>
-                  <TableCell>{val.inventory_quantity}</TableCell>
-                  <TableCell>{val.inventory_expense}</TableCell>
+                  <TableCell>{val.total_amount}</TableCell>
+                  
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </Box>
       </PerfectScrollbar>
-      <TablePagination
+      {/* <TablePagination
         component="div"
         // count={items.length}
         onPageChange={handlePageChange}
@@ -160,7 +171,7 @@ export const ItemsListResults = ({ items }) => {
         page={page}
         rowsPerPage={limit}
         rowsPerPageOptions={[5, 10, 25]}
-      />
+      /> */}
     </Card>
   );
 };
