@@ -62,7 +62,7 @@ const Register = () => {
 
           if (data.status == 200) {
             Router.push("/profile");
-          } else alert("Incorrect Data");
+          } else alert("Tin Number is occupied");
         })
         .catch((error) => {
           //handle error
@@ -158,11 +158,13 @@ const Register = () => {
               // defaultCountry={'et'}
               name="tin_number"
               margin="normal"
-              label="tin_number"
+              label="tin_number, 10 number"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               fullWidth
-             
+              inputProps={{ maxLength: 10,minLength: 10  }}
+              maxLength={10}
+              minLength={10}
               value={formik.values.tin_number}
               variant="outlined"
             />

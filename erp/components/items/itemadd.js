@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -78,6 +78,26 @@ export const ItemsAdd = (data) => {
       
     },
 });
+
+/******data fetch */
+const [item1, setItem1] = useState([]);
+useEffect(() => {
+  fetch("http://localhost:5000/api/inventory/manage", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: "Bearer " + sessionStorage.getItem("token"),
+    },
+   
+  })
+  .then(response => response.json())
+      
+  .then(data => setItem1(data.data))
+  
+  console.log(item1)
+},[])
+
+///////////////
 
   return (
     <>
@@ -216,6 +236,9 @@ export const ItemsAdd = (data) => {
         </Box>
       </Card>
     </form>
+    <div>Hello
+     
+    </div>
     </>
   );
 };
