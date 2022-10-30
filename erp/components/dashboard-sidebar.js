@@ -18,6 +18,7 @@ import { Users as UsersIcon } from '../icons/users';
 import { XCircle as XCircleIcon } from '../icons/x-circle';
 import { Logo } from './logo';
 import { NavItem } from './nav-item';
+import DnsIcon from '@mui/icons-material/Dns';
 
 const items = [
   {
@@ -34,6 +35,11 @@ const items = [
     href: '/products',
     icon: (<ShoppingBagIcon fontSize="small" />),
     title: 'Stocks'
+  },
+  {
+    href: '/stockStandard',
+    icon: (<DnsIcon fontSize="small" />),
+    title: 'Standard'
   },
   {
     href: '/account',
