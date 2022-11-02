@@ -1,9 +1,11 @@
 import Head from 'next/head';
-import { Box, Container, Grid, Pagination } from '@mui/material';
+import { Box, Container, Grid, Pagination, Typography, Divider } from '@mui/material';
 import { products } from '../__mocks__/products';
 import { ProductListToolbar } from '../components/product/product-list-toolbar';
 import { ProductCard } from '../components/product/product-card';
 import { DashboardLayout } from '../components/dashboard-layout';
+import { ShowStandard } from './showStandard'
+import { AvailableStock } from './availbleStock';
 
 const Page = () => (
   <>
@@ -22,22 +24,17 @@ const Page = () => (
       <Container maxWidth={false}>
         <ProductListToolbar />
         <Box sx={{ pt: 3 }}>
-          <Grid
-            container
-            spacing={3}
-          >
-            {products.map((product) => (
-              <Grid
-                item
-                key={product.id}
-                lg={4}
-                md={6}
-                xs={12}
-              >
-                <ProductCard product={product} />
-              </Grid>
-            ))}
-          </Grid>
+          
+          <Typography sx={{ mb: 3 }} variant="h4">
+          Available Producs
+        </Typography>
+            <AvailableStock />
+          
+          <Divider />
+          <Typography sx={{ mb: 3 }} variant="h4">
+          Add Produced Goods
+        </Typography>
+          <ShowStandard />
         </Box>
         <Box
           sx={{
