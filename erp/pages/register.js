@@ -1,8 +1,8 @@
-import Head from 'next/head';
-import NextLink from 'next/link';
-import Router from 'next/router';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import Head from "next/head";
+import NextLink from "next/link";
+import Router from "next/router";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import {
   Box,
   Button,
@@ -11,46 +11,34 @@ import {
   FormHelperText,
   Link,
   TextField,
-  Typography
-} from '@mui/material';
+  Typography,
+} from "@mui/material";
 // import MuiPhoneInput from 'material-ui-phone-number';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const Register = () => {
   const formik = useFormik({
     initialValues: {
-      full_name: '',
-      email: '',
-      
-      phone_number:'+251',
-      password: '',
-      confirm_password: '',
+      full_name: "",
+      email: "",
+
+      phone_number: "+251",
+      password: "",
+      confirm_password: "",
       // policy: false
     },
     validationSchema: Yup.object({
-      full_name: Yup
-        .string()
+      full_name: Yup.string().max(255).required("Full name is required"),
+      email: Yup.string()
+        .email("Must be a valid email")
         .max(255)
-        .required('Full name is required'),
-      email: Yup
-        .string()
-        .email('Must be a valid email')
+        .required("Email is required"),
+
+      phone_number: Yup.string().max(255).required("Phone Number is required"),
+      password: Yup.string().max(255).required("Password is required"),
+      confirm_password: Yup.string()
         .max(255)
-        .required(
-          'Email is required'),
-      
-      phone_number: Yup
-        .string()
-        .max(255)
-        .required('Phone Number is required'),
-      password: Yup
-        .string()
-        .max(255)
-        .required('Password is required'),
-        confirm_password: Yup
-        .string()
-        .max(255)
-        .required('Please confirmPassword '),
+        .required("Please confirmPassword "),
       // policy: Yup
       //   .boolean()
       //   .oneOf(
@@ -63,68 +51,64 @@ const Register = () => {
     //     .push('/')
     //     .catch(console.error);
     // }
-    onSubmit: values => {
-      console.log(JSON.stringify(values, null, 2))
+    onSubmit: (values) => {
+      console.log(JSON.stringify(values, null, 2));
       fetch("http://localhost:5000/api/auth/signup", {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify(values, null, 2)
-          })
-      
-      .then((response) => response.json())
-      .then(data => {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values, null, 2),
+      })
+        .then((response) => response.json())
+        .then((data) => {
           //handle data
           console.log(data);
-          
-        if( data.status == 200){
-          Router.push("/");
-         
-        }
-        else alert("Incorrect Data");
+
+          if (data.status == 200) {
+            alert(data.message);
+            Router.push("/");
+          } else if (data.status == 302) {
+            alert(data.message);
+            location.reload();
+          } else if (data.status == 400) {
+            alert(data.message);
+            location.reload();
+          }
         })
-        .catch(error => {
+
+        .catch((error) => {
           //handle error
         });
-    
-  },
+    },
   });
 
   return (
     <>
       <Head>
-        <title>
-          Register | ERP
-        </title>
+        <title>Register | ERP</title>
       </Head>
       <Box
         component="main"
         sx={{
-          alignItems: 'center',
-          display: 'flex',
+          alignItems: "center",
+          display: "flex",
           flexGrow: 1,
-          minHeight: '100%'
+          minHeight: "100%",
         }}
       >
         <Container maxWidth="sm">
-          
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ my: 3 }}>
-              <Typography
-                color="textPrimary"
-                variant="h4"
-              >
+              <Typography color="textPrimary" variant="h4">
                 Create a new account
               </Typography>
-              <Typography
-                color="textSecondary"
-                gutterBottom
-                variant="body2"
-              >
+              <Typography color="textSecondary" gutterBottom variant="body2">
                 Use your email to create a new account
               </Typography>
             </Box>
             <TextField
-              error={Boolean(formik.touched.full_name && formik.errors.full_name)}
+              error={Boolean(
+                formik.touched.full_name && formik.errors.full_name
+              )}
               fullWidth
               helperText={formik.touched.full_name && formik.errors.full_name}
               label="Full Name"
@@ -148,9 +132,13 @@ const Register = () => {
               value={formik.values.email}
               variant="outlined"
             />
-            <TextField 
-              error={Boolean(formik.touched.phone_number && formik.errors.phone_number)}
-              helperText={formik.touched.phone_number && formik.errors.phone_number}
+            <TextField
+              error={Boolean(
+                formik.touched.phone_number && formik.errors.phone_number
+              )}
+              helperText={
+                formik.touched.phone_number && formik.errors.phone_number
+              }
               // defaultCountry={'et'}
               name="phone_number"
               margin="normal"
@@ -158,6 +146,7 @@ const Register = () => {
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               fullWidth
+              inputProps={{ maxLength: 13,minLength: 13  }}
               type="tel"
               value={formik.values.phone_number}
               variant="outlined"
@@ -175,10 +164,16 @@ const Register = () => {
               value={formik.values.password}
               variant="outlined"
             />
-             <TextField
-              error={Boolean(formik.touched.confirm_password && formik.errors.confirm_password)}
+            <TextField
+              error={Boolean(
+                formik.touched.confirm_password &&
+                  formik.errors.confirm_password
+              )}
               fullWidth
-              helperText={formik.touched.confirm_password && formik.errors.confirm_password}
+              helperText={
+                formik.touched.confirm_password &&
+                formik.errors.confirm_password
+              }
               label="Confirm Password"
               margin="normal"
               name="confirm_password"
@@ -221,9 +216,7 @@ const Register = () => {
               </Typography>
             </Box> */}
             {Boolean(formik.touched.policy && formik.errors.policy) && (
-              <FormHelperText error>
-                {formik.errors.policy}
-              </FormHelperText>
+              <FormHelperText error>{formik.errors.policy}</FormHelperText>
             )}
             <Box sx={{ py: 2 }}>
               <Button
@@ -237,20 +230,10 @@ const Register = () => {
                 Sign Up Now
               </Button>
             </Box>
-            <Typography
-              color="textSecondary"
-              variant="body2"
-            >
-              Have an account?
-              {' '}
-              <NextLink
-                href="/"
-                passHref
-              >
-                <Link
-                  variant="subtitle2"
-                  underline="hover"
-                >
+            <Typography color="textSecondary" variant="body2">
+              Have an account?{" "}
+              <NextLink href="/" passHref>
+                <Link variant="subtitle2" underline="hover">
                   Sign In
                 </Link>
               </NextLink>
