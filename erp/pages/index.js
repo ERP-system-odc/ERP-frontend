@@ -47,7 +47,7 @@ const Login = () => {
           // WIndow.localStorage.setItem("token", data["access-token"])
           sessionStorage.setItem("token", data["access-token"]);
           console.log(sessionStorage.getItem("token"));
-          const person= data.credentials;
+          const person = data.credentials;
 
           const name = data.credentials.full_name;
           const phone = data.credentials.phone_number;
@@ -82,8 +82,16 @@ const Login = () => {
           display: "flex",
           flexGrow: 1,
           minHeight: "100%",
+          padding:"75px"
         }}
       >
+        <img
+          src="img.png"
+          padding="5px"
+          width= "15%"
+  max-width="100px"
+  height="auto"
+        />
         {/* <img src="/a.jpg" maxWidth="300"/> */}
         <Container maxWidth="sm">
           <form onSubmit={formik.handleSubmit}>
