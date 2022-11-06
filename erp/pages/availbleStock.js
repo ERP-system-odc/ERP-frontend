@@ -18,8 +18,6 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Switch from "@mui/material/Switch";
 
-import { useFormik } from "formik";
-import * as Yup from "yup";
 
 import {
   Avatar,
@@ -33,19 +31,48 @@ import {
   CardActions,
   TextField,
 } from "@mui/material";
+import { useFormik } from "formik";
 
 export const AvailableStock=()=> {
   const [item1, setItem1] = useState([]);
+  const [on, setOn] = useState(false);
 
   const [open, setOpen] = useState(false);
+  const [product_selling_price1, setProduct_selling_price1]=useState({product_selling_price:""})
 
-  const updateClickOpen = (e) => {
-    fetch(`http://localhost:5000/api/product/manage/${val.id}`, {
-      method: "GET",
+const [variable, setVariable]=useState("")
+/////////////////////////////////////
+  //////update selling price
+  //////////////////////////////////////
+
+  const handleClickOpen = ({x}) => {
+    setVariable(x);
+    setOpen(true);
+    console.log("the var is" + variable)
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setProduct_selling_price1({[name]: value });
+  };
+
+  const updateClickOpen = (e, {b}) => {
+    e.preventDefault();
+    console.log(b)
+    // console.log(`http://localhost:5000/api/product/manage/${b}`)
+    fetch(`http://localhost:5000/api/product/manage/${b}`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         authorization: "Bearer " + sessionStorage.getItem("token"),
       },
+      body: JSON.stringify(product_selling_price1, null, 2),
     })
       .then((response) => response.json())
 
@@ -53,14 +80,22 @@ export const AvailableStock=()=> {
         
         if (data.status == 200) {
           console.log("yaay")
-          //location.reload()
+          setOn(true)
+          // location.reload()
           // Router.push("/customers");
         } else alert("Incorrect Data");
       });
   };
-  const handleClickOpen = (e) => {
-    fetch(`http://localhost:5000/api/product/manage/${id}`, {
-      method: "GET",
+  // const onSubmit=(e)=>{
+  //   e.preventDefault();
+  //   updateClickOpen()
+  // }
+
+
+  const handleClickSell = ({a}) => {
+    // alert(`http://localhost:5000/api/product/manage/${a}`)
+    fetch(`http://localhost:5000/api/product/manage/${a}`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         authorization: "Bearer " + sessionStorage.getItem("token"),
@@ -72,6 +107,7 @@ export const AvailableStock=()=> {
         
         if (data.status == 200) {
           console.log("yaay")
+          setOn(true)
           //location.reload()
           // Router.push("/customers");
         } else alert("Incorrect Data");
@@ -92,7 +128,8 @@ export const AvailableStock=()=> {
 
       .then((data) => setItem1(data.foundProduct));
     console.log(item1);
-  }, []);
+    setOn(false)
+  }, [on]);
 
   console.log(item1);
 
@@ -126,13 +163,56 @@ export const AvailableStock=()=> {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button variant="outlined" onClick={handleClickOpen(val.id)}>
+            <Button variant="outlined" onClick={(sold)=>handleClickSell({a:val.id})}>
               Sold
             </Button>
-            <Button variant="outlined" onClick={updateClickOpen}>
+            <Button variant="outlined" onClick={()=>{handleClickOpen({x:val.id})}}>
               Update Price
             </Button>
-           
+            <Dialog open={open} onClose={handleClose}>
+              <DialogTitle>Update Selling Price</DialogTitle>
+              <DialogContent>
+              <DialogContentText>
+                  Please specify the New Price
+                </DialogContentText>
+                <Box
+                  noValidate
+                  
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    m: "auto",
+                    width: "fit-content",
+                  }}
+                >
+                  <form onSubmit={console.log(val.id)}>
+                  <TextField
+                     
+                     name="product_selling_price"
+                     margin="normal"
+                     label="product_selling_price"
+                     onChange={handleChange}
+                     fullWidth
+                     type="number"
+                     value={product_selling_price1.product_selling_price}
+                     variant="outlined"
+                   />
+                   <Box sx={{ py: 2 }}>
+                      <Button
+                        color="primary"
+                        fullWidth
+                        size="large"
+                        type="submit"
+                        variant="contained"
+                        
+                      >
+                        Produced
+                      </Button>
+                    </Box>
+                  </form>
+                </Box>
+              </DialogContent>
+            </Dialog>
           </CardActions>
         </Grid>
       ))}
