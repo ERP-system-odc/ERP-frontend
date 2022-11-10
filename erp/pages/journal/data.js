@@ -3,6 +3,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
 import { format } from "date-fns";
 import {
+  Button,
   Avatar,
   Box,
   Card,
@@ -17,7 +18,7 @@ import {
 } from "@mui/material";
 
 import { useRouter } from 'next/router'
-
+import Router from 'next/router'
 
 const ItemsListResults = () => {
   const [item1, setItem1] = useState([]);
@@ -47,8 +48,34 @@ const ItemsListResults = () => {
 
 
   return (
-    <Card>
-    
+    <Card sm={{ padding:3}}>
+      <Box
+        sx={{
+          alignItems: 'center',
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          m: -1,
+          padding:3
+        }}
+      >
+        <Typography
+          sx={{ m: 1 }}
+          variant="h4"
+        >
+          Jornal Entry
+        </Typography>
+        <Box sx={{ m: 1 }}>
+         
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={()=>Router.push({pathname:'../journalEntry'})}
+          >
+           Go Back
+          </Button>
+        </Box>
+      </Box>
         <Box sx={{ minWidth: 1050 }}>
           <Table>
             <TableHead>

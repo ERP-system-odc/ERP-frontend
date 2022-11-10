@@ -12,6 +12,7 @@ import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import Router from 'next/router'
 
 import {
+  Divider,
   Avatar,
   Box,
   Card,
@@ -155,30 +156,7 @@ export const Journal = () => {
     }
   ];
   const [kutr, setKutr]=useState([])
-  // useEffect (
-  //   ()=>{
-  //     fetch(`http://localhost:5000/api/journalEntry/manage/${a}`, {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         authorization: "Bearer " + sessionStorage.getItem("token"),
-  //       },
-  //     })
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         console.log(data);
-  //         console.log(data.data.length);
-  //         // for (let x = 0; x < data.data.length; x++) {
-  //         // setEntry(...entry, data.data[x])
-  //         // }
-  //         for (let x = 0; x < data.data.length; x++) {
-  //           entry.push(data.data[x]);
-  //         }
   
-  //         console.log(entry);
-  //       });},
-  //       []
-  // )
   
   const handleChange = (e) => {
     e.preventDefault()
@@ -190,27 +168,6 @@ export const Journal = () => {
     const z = JSON.stringify(val, null, 2);
     console.log(JSON.stringify(val, null, 2));
 
-    // fetch(`http://localhost:5000/api/journalEntry/manage/${a}`, {
-    //   method: "GET",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     authorization: "Bearer " + sessionStorage.getItem("token"),
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //     console.log(data.data.length);
-    //     // for (let x = 0; x < data.data.length; x++) {
-    //      setKutr([data.data])
-    //  //   }
-    //     console.log("lol",kutr)
-    //     for (let x = 0; x < data.data.length; x++) {
-    //       entry.push(data.data[x]);
-    //     }
-
-    //    // console.log(entry);
-    //   });
     setToggle(true);
     console.log(toggle);
     setNum(++num)
@@ -226,7 +183,15 @@ export const Journal = () => {
   // console.log(value)
   return (
     <div>
-      <form onSubmit={handleChange   }>
+       <Card>
+        <Box sx={{ minWidth: 950, padding:3}}>
+          Please add the date to see the Journal Entry
+        </Box>
+      </Card>
+
+      <Divider sx={{ padding:1}}/>
+     
+      <form onSubmit={handleChange} >
         <DesktopDatePicker
           label="Input the date"
           inputFormat="yyyy-MM-dd"
@@ -237,34 +202,7 @@ export const Journal = () => {
         />
         <Button type="submit">Add</Button>
       </form>
-      <Card>
-        <Box sx={{ minWidth: 950 }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Date</TableCell>
-                <TableCell>Account</TableCell>
-                <TableCell>Debit</TableCell>
-                <TableCell>Credit</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {kutr.map((a) => {
-                return (
-                  <TableRow hover key={a.id}>
-                    <TableCell>{a.created_at}</TableCell>
-                    <TableCell>{a.account}</TableCell>
-
-                    <TableCell>{a.debit}</TableCell>
-                    <TableCell>{a.credit}</TableCell>
-                  </TableRow>
-                );
-              })}
-          
-            </TableBody>
-          </Table>
-        </Box>
-      </Card>
+     
     </div>
   );
 };
