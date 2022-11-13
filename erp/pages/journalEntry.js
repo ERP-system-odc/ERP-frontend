@@ -3,11 +3,15 @@ import { Box, Container } from '@mui/material';
 
 import { DashboardLayout } from '../components/dashboard-layout';
 import { Journal } from './journal'
+import { GeneralLedger } from './generalLedger';
+import { TrialBalance } from './trialBalance';
+import { IncomeStatement } from './incomeStatement'
+
 const Page = () => (
   <>
     <Head>
       <title>
-        Journal Entry | Material Kit
+        Finance | Material Kit
       </title>
     </Head>
     <Box
@@ -19,6 +23,15 @@ const Page = () => (
     >
       <Container maxWidth={false}>
         <Journal />
+      </Container>
+      <Container maxWidth={false}>
+        <GeneralLedger />
+      </Container>
+      <Container maxWidth={false}>
+        <TrialBalance />
+      </Container>
+      <Container maxWidth={false}>
+        <IncomeStatement />
       </Container>
     </Box>
   </>
