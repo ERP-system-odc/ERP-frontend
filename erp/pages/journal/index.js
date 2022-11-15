@@ -145,7 +145,8 @@ export const Journal = () => {
     },
   ]);
   const [toggle, setToggle] = useState(false);
-  const a=value.toString().substring(0, 10);
+  const [z, setZ]=useState(value)
+  //const a=value.toString().substring(0, 10);
   const entry= [
     {
       id: 1,
@@ -163,8 +164,9 @@ export const Journal = () => {
     
     console.log(value);
     const a = value.toString().substring(0, 10);
-    console.log(a);
-    const val = { journal_entry_date: a };
+    setZ(value.toString().substring(0, 10));
+    //console.log(a);
+    const val = { journal_entry_date: z };
     const z = JSON.stringify(val, null, 2);
     console.log(JSON.stringify(val, null, 2));
 

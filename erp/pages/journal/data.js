@@ -29,7 +29,7 @@ const ItemsListResults = () => {
     const router = useRouter()
   console.log(router.query);
   const b=router.query.tip
-  console.log(b)
+  console.log("the routed val is ", b)
   
   useEffect(() => {
     fetch(`http://localhost:5000/api/journalEntry/manage/${b}`, {
