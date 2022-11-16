@@ -28,7 +28,7 @@ import {
         >
           Items
         </Typography>
-        <Box sx={{ m: 1 }}>
+        {/* <Box sx={{ m: 1 }}>
           <Button
             startIcon={(<UploadIcon fontSize="small" />)}
             sx={{ mr: 1 }}
@@ -44,10 +44,11 @@ import {
           <Button
             color="primary"
             variant="contained"
+            onClick={}
           >
             Add Items
           </Button>
-        </Box>
+        </Box> */}
       </Box>
       <Box sx={{ mt: 3 }}>
         <Card>
