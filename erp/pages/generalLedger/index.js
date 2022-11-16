@@ -27,9 +27,10 @@ import {
   Button
 } from "@mui/material";
 
-export const Journal = () => {
+export const GeneralLedger = () => {
   const [num, setNum]=useState(0)
   const [value, setValue] = useState(dayjs("2022-11-08").toJSON());
+  const [value1, setValue1] = useState(dayjs("2022-11-10").toJSON());
   const [journal, setJournal] = useState([
     {
       id: 1,
@@ -145,8 +146,8 @@ export const Journal = () => {
     },
   ]);
   const [toggle, setToggle] = useState(false);
-  const [z, setZ]=useState(value)
-  //const a=value.toString().substring(0, 10);
+  const a=value.toString().substring(0, 10);
+  const b=value1.toString().substring(0, 10);
   const entry= [
     {
       id: 1,
@@ -157,28 +158,72 @@ export const Journal = () => {
     }
   ];
   const [kutr, setKutr]=useState([])
+  // useEffect (
+  //   ()=>{
+  //     fetch(`http://localhost:5000/api/journalEntry/manage/${a}`, {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         authorization: "Bearer " + sessionStorage.getItem("token"),
+  //       },
+  //     })
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         console.log(data);
+  //         console.log(data.data.length);
+  //         // for (let x = 0; x < data.data.length; x++) {
+  //         // setEntry(...entry, data.data[x])
+  //         // }
+  //         for (let x = 0; x < data.data.length; x++) {
+  //           entry.push(data.data[x]);
+  //         }
   
+  //         console.log(entry);
+  //       });},
+  //       []
+  // )
   
   const handleChange = (e) => {
     e.preventDefault()
     
     console.log(value);
     const a = value.toString().substring(0, 10);
-    setZ(value.toString().substring(0, 10));
-    //console.log(a);
-    const val = { journal_entry_date: z };
+    console.log(a);
+    const val = { journal_entry_date: a };
     const z = JSON.stringify(val, null, 2);
     console.log(JSON.stringify(val, null, 2));
 
+    // fetch(`http://localhost:5000/api/journalEntry/manage/${a}`, {
+    //   method: "GET",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     authorization: "Bearer " + sessionStorage.getItem("token"),
+    //   },
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log(data);
+    //     console.log(data.data.length);
+    //     // for (let x = 0; x < data.data.length; x++) {
+    //      setKutr([data.data])
+    //  //   }
+    //     console.log("lol",kutr)
+    //     for (let x = 0; x < data.data.length; x++) {
+    //       entry.push(data.data[x]);
+    //     }
+
+    //    // console.log(entry);
+    //   });
     setToggle(true);
     console.log(toggle);
     setNum(++num)
     console.log(num)
   //  console.log(entry);
   Router.push({
-    pathname: '/journal/data',
+    pathname: '/generalLedger/data',
     query: {
-       tip : a
+       tip : a,
+       tip1 : b
      },
 }) 
   };
@@ -187,7 +232,7 @@ export const Journal = () => {
     <div>
        <Card>
         <Box sx={{ minWidth: 950, padding:3}}>
-          Please add the date to see the Journal Entry
+          Please add the date to see the General Ledger
         </Box>
       </Card>
 
@@ -195,11 +240,19 @@ export const Journal = () => {
      
       <form onSubmit={handleChange} >
         <DesktopDatePicker
-          label="Input the date"
+          label="Input the initial date"
           inputFormat="yyyy-MM-dd"
           value={value}
           type="date"
           onChange={(e) => setValue(dayjs(e).toJSON())}
+          renderInput={(params) => <TextField {...params} />}
+        />
+        <DesktopDatePicker
+          label="Input the last date"
+          inputFormat="yyyy-MM-dd"
+          value={value1}
+          type="date"
+          onChange={(e) => setValue1(dayjs(e).toJSON())}
           renderInput={(params) => <TextField {...params} />}
         />
         <Button type="submit">Add</Button>
