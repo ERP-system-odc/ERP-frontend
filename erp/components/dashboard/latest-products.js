@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useState, useEffect } from 'react';
 
 const products = [
   {
@@ -48,23 +49,42 @@ const products = [
   }
 ];
 
-export const LatestProducts = (props) => (
-  <Card {...props}>
+export const LatestProducts = () => {
+
+  const [item1, setItem1] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/product/manage", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    })
+      .then((response) => response.json())
+
+      .then((data) => setItem1(data.foundProduct));
+    console.log(item1);
+
+  }, []);
+
+return(
+  <Card >
     <CardHeader
-      subtitle={`${products.length} in total`}
-      title="Tranactions"
+      // subtitle={`${products.length} in total`}
+      title="Stocks"
     />
     <Divider />
     <List>
-      {products.map((product, i) => (
+      {item1.map((product, i) => (
         <ListItem
-          divider={i < products.length - 1}
-          key={product.id}
+          // divider={i < products.length - 1}
+          key={i}
         >
           
           <ListItemText
-            primary={product.name}
-            secondary={`Updated ${formatDistanceToNow(product.updatedAt)}`}
+            primary={product.product_name}
+            secondary={`Quantity ${product.product_quantity}`}
           />
           <IconButton
             edge="end"
@@ -93,4 +113,4 @@ export const LatestProducts = (props) => (
       </Button>
     </Box>
   </Card>
-);
+)};

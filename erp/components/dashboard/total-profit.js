@@ -1,13 +1,11 @@
-import { Avatar, Box, Card, CardContent, Grid, LinearProgress, Typography } from '@mui/material';
-import InsertChartIcon from '@mui/icons-material/InsertChartOutlined';
-import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import { Avatar, Card, CardContent, Grid, Typography } from '@mui/material';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 import { useState, useEffect } from "react";
 
-export const DailySale = (props) => {
+export const TotalProfit = (props) => {
 
   const [item1, setItem1] = useState([]);
-  const [item2, setItem2] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/firmDefinition/chartDefinition", {
@@ -19,19 +17,13 @@ export const DailySale = (props) => {
     })
       .then((response) => response.json())
 
-    .then((data) => {
-      console.log(data)
-      setItem1(data.max_sold_product.name); 
-      setItem2(data.max_sold_product.count)})
-     //.then((data) => console.log(data.max_sold_product.name))
-    
-  
+      .then((data) => setItem1(data.income));
+    console.log(item1);
+   
   }, []);
+
 return(
-  <Card
-    sx={{ height: '100%' }}
-    {...props}
-  >
+  <Card {...props}>
     <CardContent>
       <Grid
         container
@@ -44,7 +36,7 @@ return(
             gutterBottom
             variant="overline"
           >
-            Most Sold Product
+            TOTAL PROFIT
           </Typography>
           <Typography
             color="textPrimary"
@@ -52,32 +44,19 @@ return(
           >
             {item1}
           </Typography>
-          <Typography
-          color="textSecondary"
-          variant="caption"
-        >
-          {item2}
-        </Typography>
         </Grid>
         <Grid item>
           <Avatar
             sx={{
-              backgroundColor: 'warning.main',
+              backgroundColor: 'success.main',
               height: 56,
               width: 56
             }}
           >
-            <CurrencyExchangeIcon />
+            <AttachMoneyIcon />
           </Avatar>
         </Grid>
       </Grid>
-      <Box sx={{ pt: 3 }}>
-     
-        <LinearProgress
-          value={75.5}
-          variant="determinate"
-        />
-      </Box>
     </CardContent>
   </Card>
 );

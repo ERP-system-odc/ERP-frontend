@@ -12,11 +12,12 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
-  Tooltip
+  Tooltip,
+  Typography
 } from '@mui/material';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { SeverityPill } from '../severity-pill';
-
+import { useState, useEffect } from 'react';
 const orders = [
   {
     id: uuid(),
@@ -80,61 +81,72 @@ const orders = [
   }
 ];
 
-export const LatestOrders = (props) => (
-  <Card {...props}>
-    <CardHeader title="Stocks" />
+export const LatestOrders = () => {
+
+  const [item1, setItem1] = useState([]);
+  
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/expense/manage", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+     
+    })
+    .then(response => response.json())
+        
+    .then(data => setItem1(data.foundExpense))
+    
+  },[])
+
+
+return(
+  <Card>
+    <CardHeader title="Transactions" />
     <PerfectScrollbar>
       <Box sx={{ minWidth: 800 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                Order Ref
-              </TableCell>
-              <TableCell>
-                Customer
-              </TableCell>
-              <TableCell sortDirection="desc">
-                <Tooltip
-                  enterDelay={300}
-                  title="Sort"
-                >
-                  <TableSortLabel
-                    active
-                    direction="desc"
-                  >
-                    Date
-                  </TableSortLabel>
-                </Tooltip>
-              </TableCell>
-              <TableCell>
-                Status
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {orders.map((order) => (
-             
-              <TableRow
-                hover
-                key={order.id}
-              >
-                <TableCell>
-                  {order.ref}
-                </TableCell>
-                <TableCell>
-                  {order.customer.name}
-                </TableCell>
-                <TableCell>
-                  {format(order.createdAt, 'dd/MM/yyyy')}
-                </TableCell>
-                <TableCell >                
-                  {order.status}                
-                </TableCell>
+      <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>expense_name</TableCell>
+                <TableCell>expense_amount</TableCell>
+                <TableCell>created_at</TableCell>
+                <TableCell>updated_at</TableCell>
+           
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {
+              
+              item1.map(val => (
+                <TableRow
+                  hover
+                  key={val.id}
+                 
+                >
+                  <TableCell>
+                    <Box
+                      sx={{
+                        alignItems: "center",
+                        display: "flex",
+                      }}
+                    >
+                      <Typography color="textPrimary" variant="body1">
+                        {val.expense_name}
+                      </Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>{val.expense_amount}</TableCell>
+
+                  <TableCell>{val.created_at}</TableCell>
+                  <TableCell>{val.updated_at}</TableCell>
+                  
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
       </Box>
     </PerfectScrollbar>
     <Box
@@ -154,4 +166,4 @@ export const LatestOrders = (props) => (
       </Button>
     </Box>
   </Card>
-);
+)};
