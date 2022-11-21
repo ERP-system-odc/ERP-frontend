@@ -48,8 +48,8 @@ export const ItemsListResults = ({ items }) => {
     })
     .then(response => response.json())
         
-    .then(data => setItem1(data.data))
-    
+    .then(data => setItem1(data.data), console.log(data.data))
+   
   },[])
 
 
