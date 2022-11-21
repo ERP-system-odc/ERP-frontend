@@ -17,8 +17,11 @@ import { UserAdd as UserAddIcon } from '../icons/user-add';
 import { Users as UsersIcon } from '../icons/users';
 import { XCircle as XCircleIcon } from '../icons/x-circle';
 import { Logo } from './logo';
+// import { Logo1 } from '../public/img.png';
 import { NavItem } from './nav-item';
 import DnsIcon from '@mui/icons-material/Dns';
+import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
+import EventRepeatIcon from '@mui/icons-material/EventRepeat';
 
 const items = [
   {
@@ -42,12 +45,22 @@ const items = [
     title: 'Standard'
   },
   {
+    href: '/expense',
+    icon: (<RequestQuoteIcon fontSize="small" />),
+    title: 'Expense'
+  },
+  {
+    href: '/journalEntry',
+    icon: (<EventRepeatIcon fontSize="small" />),
+    title: 'Finance'
+  },
+  {
     href: '/account',
     icon: (<GroupIcon fontSize="small" />),
     title: 'Employees'
   },
   {
-    href: '/settings',
+    href: '/test',
     icon: (<CogIcon fontSize="small" />),
     title: 'Settings'
   },
@@ -91,19 +104,19 @@ export const DashboardSidebar = (props) => {
       >
         <div>
           <Box sx={{ p: 3 }}>
-            <NextLink
+            {/* <NextLink
               href="/settings"
               passHref
             >
               <a>
-                <Logo
+                <Logo1
                   sx={{
                     height: 42,
                     width: 42
                   }}
                 />
               </a>
-            </NextLink>
+            </NextLink> */}
           </Box>
           <Box sx={{ px: 2 }}>
             <Box
@@ -123,15 +136,13 @@ export const DashboardSidebar = (props) => {
                   color="inherit"
                   variant="subtitle1"
                 >
-                  User Name
+                  ERP 
                 </Typography>
                 <Typography
                   color="neutral.400"
                   variant="body2"
                 >
-                  Your Firm
-                  {' '}
-                  : Name
+                  System
                 </Typography>
               </div>
               <SelectorIcon

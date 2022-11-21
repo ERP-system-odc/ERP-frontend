@@ -16,7 +16,7 @@ export const Budget = (props) => {
     })
       .then((response) => response.json())
 
-      .then((data) => setItem1(data.income));
+      .then((data) => setItem1(data.capital));
     console.log(item1);
    
   }, []);
