@@ -48,9 +48,9 @@ const ItemsListResults = () => {
 
       .then((data) => {
         setItem1(data.asset_general_ledger),
-          setItem2(data.liability_general_ledger),
-          setItem3(data.assetFinalBalance),
-          setItem4(data.liabilityFinalBalance);
+          setItem2(data.expense_general_ledger)
+          setItem3(data.liabilityGeneralLedge),
+          setItem4(data.capitalGeneralLedger);
       });
   }, []);
 
@@ -90,7 +90,8 @@ const ItemsListResults = () => {
               <TableCell>Date</TableCell>
               <TableCell>Debit</TableCell>
               <TableCell>Credit</TableCell>
-              <TableCell>Balanace</TableCell>
+              <TableCell>Balanace Debit</TableCell>
+              <TableCell>Balanace Credit</TableCell>
               <TableCell>Description</TableCell>
             </TableRow>
           </TableHead>
@@ -111,7 +112,8 @@ const ItemsListResults = () => {
                 </TableCell>
                 <TableCell>{val.debit}</TableCell>
                 <TableCell>{val.credit}</TableCell>
-                <TableCell>{val.balance}</TableCell>
+                <TableCell>{val.balance_debit}</TableCell>
+                <TableCell>{val.balance_credit}</TableCell>
                 <TableCell>{val.description}</TableCell>
               </TableRow>
             ))}
@@ -119,10 +121,10 @@ const ItemsListResults = () => {
               <TableCell />
               <TableCell />
               <TableCell>
-                <Typography>Asset Final Balance :</Typography>
+                {/* <Typography>Asset Final Balance :</Typography> */}
               </TableCell>
               <TableCell>
-                <Typography>{item3}</Typography>
+                {/* <Typography>{item3}</Typography> */}
               </TableCell>
             </TableRow>
           </TableBody>
@@ -131,7 +133,7 @@ const ItemsListResults = () => {
       <Divider sx={{ padding: 2 }} />
       <Box sx={{ minWidth: 1050 }}>
         <Typography sx={{ m: 1 }} variant="h5">
-          Liability Final Balance
+          Expense Final Balance
         </Typography>
         <Table>
           <TableHead>
@@ -139,7 +141,8 @@ const ItemsListResults = () => {
               <TableCell>Date</TableCell>
               <TableCell>Debit</TableCell>
               <TableCell>Credit</TableCell>
-              <TableCell>Balanace</TableCell>
+              <TableCell>Balanace Debit</TableCell>
+              <TableCell>Balanace Credit</TableCell>
               <TableCell>Description</TableCell>
             </TableRow>
           </TableHead>
@@ -160,7 +163,8 @@ const ItemsListResults = () => {
                 </TableCell>
                 <TableCell>{val.debit}</TableCell>
                 <TableCell>{val.credit}</TableCell>
-                <TableCell>{val.balance}</TableCell>
+                <TableCell>{val.balance_debit}</TableCell>
+                <TableCell>{val.balance_credit}</TableCell>
                 <TableCell>{val.description}</TableCell>
               </TableRow>
             ))}
@@ -168,10 +172,10 @@ const ItemsListResults = () => {
               <TableCell />
               <TableCell />
               <TableCell>
-                <Typography>Liability Final Balance :</Typography>
+                {/* <Typography>Expense Final Balance :</Typography> */}
               </TableCell>
               <TableCell>
-                <Typography>{item4}</Typography>
+                {/* <Typography>{item4}</Typography> */}
               </TableCell>
             </TableRow>
           </TableBody>

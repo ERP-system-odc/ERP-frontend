@@ -25,6 +25,10 @@ const ItemsListResults = () => {
   const [item1, setItem1] = useState([]);
   const [item2, setItem2] = useState([]);
   const [item3, setItem3] = useState([]);
+  const [item4, setItem4] = useState([]);
+  const [item5, setItem5] = useState([]);
+  const [item6, setItem6] = useState([]);
+  const [item7, setItem7] = useState([]);
 
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
@@ -34,6 +38,7 @@ const ItemsListResults = () => {
   console.log(router.query);
   const a = router.query.tip;
   const b = router.query.tip1;
+  console.log(a);
   console.log(b);
 
   useEffect(() => {
@@ -47,9 +52,14 @@ const ItemsListResults = () => {
       .then((response) => response.json())
 
       .then((data) => {
-        setItem1(data.asset),
-          setItem2(data.liability),
-          setItem3(data.capital)
+        console.log(data);
+        setItem1(data.asset);
+        setItem2(data.liability);
+        setItem3(data.capital);
+        setItem4(data.expense);
+        setItem5(data.revenue);
+        setItem6(data.debit_sum);
+        setItem7(data.credit_sum);
       });
   }, []);
 
@@ -67,7 +77,7 @@ const ItemsListResults = () => {
         }}
       >
         <Typography sx={{ m: 1 }} variant="h4">
-        Trial Balance
+          Trial Balance
         </Typography>
         <Box sx={{ m: 1 }}>
           <Button
@@ -81,22 +91,52 @@ const ItemsListResults = () => {
       </Box>
       <Box sx={{ minWidth: 1050 }}>
         <Typography sx={{ m: 1 }} variant="h5">
-        Trial Balance  from {a} to {b}
+          Trial Balance from {a} to {b}
         </Typography>
-  
       </Box>
-      <Divider sx={{ padding:2 }}/>
+      <Divider sx={{ padding: 2 }} />
       <Box>
-      <Typography sx={{ m: 1 }} variant="h6">
-        {item1.account} : {item1.balance}
-        </Typography>
-      <Typography sx={{ m: 1 }} variant="h6">
-        {item2.account} : {item2.balance}
-        </Typography>
-      <Typography sx={{ m: 1 }} variant="h6">
-        {item3.account} : {item3.balance}
-        </Typography>
-      
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Account</TableCell>
+              <TableCell>Debit</TableCell>
+              <TableCell>Credit</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell>{item1.account}</TableCell>
+              <TableCell>{item1.debit}</TableCell>
+              <TableCell>{item1.credit}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>{item2.account}</TableCell>
+              <TableCell>{item2.debit}</TableCell>
+              <TableCell>{item2.credit}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>{item3.account}</TableCell>
+              <TableCell>{item3.debit}</TableCell>
+              <TableCell>{item3.credit}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>{item4.account}</TableCell>
+              <TableCell>{item4.debit}</TableCell>
+              <TableCell>{item4.credit}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>{item5.account}</TableCell>
+              <TableCell>{item5.debit}</TableCell>
+              <TableCell>{item5.credit}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell></TableCell>
+              <TableCell><h3>{item6}</h3></TableCell>
+              <TableCell><h3>{item7}</h3></TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </Box>
     </Card>
   );
