@@ -31,7 +31,7 @@ import {
   Typography,
   Button,
   CardActions,
-  TextField
+  TextField,
 } from "@mui/material";
 
 export const ShowStandard = ({ items }) => {
@@ -49,46 +49,38 @@ export const ShowStandard = ({ items }) => {
 
   const formik = useFormik({
     initialValues: {
-      "product_quantity":"",
-      "product_selling_price":"",
-      "product_standard":"",
-      "product_expense":""   
+      product_quantity: "",
+      product_selling_price: "",
+      product_standard: "",
+      product_expense: "",
     },
 
-
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-      fetch(
-        "http://localhost:5000/api/product/manage",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "authorization": "Bearer "+sessionStorage.getItem("token"),
-          },
-          body: JSON.stringify(values, null, 2),
-        }
-      )
+      //alert(JSON.stringify(values, null, 2));
+      fetch("http://localhost:5000/api/product/manage", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+        body: JSON.stringify(values, null, 2),
+      })
         .then((response) => response.json())
         .then((data) => {
           //handle data
           console.log(data);
 
           if (data.status == 200) {
-            console.log("yaay")
-            location.reload()
+            console.log("yaay");
+            location.reload();
             // Router.push("/customers");
           } else alert("Incorrect Data");
         })
         .catch((error) => {
           //handle error
         });
-     
     },
-});
-
-
-
+  });
 
   useEffect(() => {
     fetch("http://localhost:5000/api/standard/manage", {
@@ -104,7 +96,6 @@ export const ShowStandard = ({ items }) => {
     console.log(item1);
   }, []);
 
-  
   console.log(item1);
 
   return (
@@ -131,9 +122,7 @@ export const ShowStandard = ({ items }) => {
               {val.standard_name}
             </Typography>
             <Typography component="p">
-              well meaning and kindly.
-              <br />
-              {'"a benevolent smile"'}
+              This is the product Standard. 
             </Typography>
           </CardContent>
           <CardActions>
@@ -141,15 +130,13 @@ export const ShowStandard = ({ items }) => {
               Produced
             </Button>
             <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
-        <DialogContent>
-        
+              <DialogTitle>Product</DialogTitle>
+              <DialogContent>
                 <DialogContentText>
-                  Please specify the quantity and prices
+                  Please specify the quantity and prices{val.standard_name}
                 </DialogContentText>
                 <Box
                   noValidate
-                  
                   sx={{
                     display: "flex",
                     flexDirection: "column",
@@ -168,13 +155,12 @@ export const ShowStandard = ({ items }) => {
                       value={formik.values.product_standard}
                       variant="outlined"
                     >
-                      <MenuItem  value={val.standard_name}>
-                      {val.standard_name}
+                      <MenuItem value={val.standard_name}>
+                        {val.standard_name}
                       </MenuItem>
                     </TextField>
 
                     <TextField
-                     
                       name="product_selling_price"
                       margin="normal"
                       label="product_selling_price"
@@ -186,7 +172,6 @@ export const ShowStandard = ({ items }) => {
                       variant="outlined"
                     />
                     <TextField
-
                       name="product_quantity"
                       margin="normal"
                       label="product_quantity"
@@ -198,7 +183,6 @@ export const ShowStandard = ({ items }) => {
                       variant="outlined"
                     />
                     <TextField
-
                       name="product_expense"
                       margin="normal"
                       label="product_expense"
@@ -230,11 +214,8 @@ export const ShowStandard = ({ items }) => {
               </DialogActions>
             </Dialog>
           </CardActions>
-
-        
         </Grid>
       ))}
-
     </div>
   );
 };
