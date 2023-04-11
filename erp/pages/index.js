@@ -12,9 +12,30 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
+import { loginAPI } from "../utils/apiUtils";
 
 const Login = () => {
+  const handleLogin = async (data) => {
+    const params = {
+      email: data.email,
+      password: data.password,
+    };
+
+    try {
+      const response = await loginAPI(params);
+      // console.log(response)
+
+      sessionStorage.setItem("token", response.data["access-token"]);
+      if (response.data.credentials.is_starter == true) {
+        Router.push("/firm");
+      } else {
+        Router.push("/profile");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -27,46 +48,10 @@ const Login = () => {
         .required("Email is required"),
       password: Yup.string().max(255).required("Password is required"),
     }),
+
     onSubmit: (values) => {
-      fetch("http://localhost:5000/api/auth/signin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values, null, 2),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          //handle data
-          console.log(data);
-          console.log(data.credentials.phone_number);
-          console.log(data.credentials.full_name);
-          console.log(data.credentials);
-          console.log(data["access-token"]);
-          // const jwt = data.access-token;
-
-          // console.log("the token is " )
-          // WIndow.localStorage.setItem("token", data["access-token"])
-          sessionStorage.setItem("token", data["access-token"]);
-          console.log(sessionStorage.getItem("token"));
-          const person = data.credentials;
-
-          const name = data.credentials.full_name;
-          const phone = data.credentials.phone_number;
-          if (data.credentials.is_starter == true) {
-            Router.push({
-              pathname: "/firm",
-              query: { person, name, phone },
-            });
-          } else {
-            Router.push({
-              pathname: "/profile",
-              query: { person, name, phone },
-            });
-          }
-        })
-
-        .catch((error) => {
-          //handle error
-        });
+      console.log(values);
+      handleLogin(values);
     },
   });
 
@@ -82,15 +67,15 @@ const Login = () => {
           display: "flex",
           flexGrow: 1,
           minHeight: "100%",
-          padding:"75px"
+          padding: "75px",
         }}
       >
         <img
           src="img.png"
           padding="5px"
-          width= "15%"
-  max-width="100px"
-  height="auto"
+          width="15%"
+          max-width="100px"
+          height="auto"
         />
         {/* <img src="/a.jpg" maxWidth="300"/> */}
         <Container maxWidth="sm">

@@ -3,6 +3,7 @@ import { Box, Button, Card, CardContent, CardHeader, Divider, useTheme } from '@
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useState,useEffect } from 'react';
+import { dashboardAPI } from '../../utils/apiUtils';
 
 export const Sales = (props) => {
   const theme = useTheme();
@@ -13,31 +14,19 @@ export const Sales = (props) => {
   var x=[];
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/firmDefinition/chartDefinition", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-    })
-      .then((response) => response.json())
-
-      .then((data) =>{
-        setItem1(data.incomeArray)
-        setItem2(data.expenseArray)
-        setItem3(data.finalDateArray)
-        console.log("the new income length is ",data)
-        // for(let a=0; a<data.income_expense_graph.length;a++)
-        // {
-        //   x.push("a")
-        // } 
-      });
-  
-   
+    const token =  sessionStorage.getItem("token")
+    async function fetchData() {
+      try{
+        const response = await dashboardAPI(token)
+        setItem1(response.data.incomeArray)
+        setItem2(response.data.expenseArray)
+        setItem3(response.data.finalDateArray)
+      }catch(error){
+        console.log(error)
+      }
+    }
+    fetchData();
   }, []);
-
-  console.log("the expense is ",item1);
-  console.log(x, "the length is ", x.length)
 
   const data = {
     datasets: [

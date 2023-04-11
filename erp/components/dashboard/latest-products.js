@@ -15,6 +15,7 @@ import {
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState, useEffect } from 'react';
+import { productAPI } from '../../utils/apiUtils';
 
 const products = [
   {
@@ -54,24 +55,21 @@ export const LatestProducts = () => {
   const [item1, setItem1] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/product/manage", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-    })
-      .then((response) => response.json())
-
-      .then((data) => setItem1(data.foundProduct));
-    console.log(item1);
-
+    const token =  sessionStorage.getItem("token")
+    async function fetchData() {
+      try{
+        const response = await productAPI(token)
+        setItem1(response.data.foundProduct)
+      }catch(error){
+        console.log(error)
+      }
+    }
+    fetchData();
   }, []);
 
 return(
   <Card >
     <CardHeader
-      // subtitle={`${products.length} in total`}
       title="Stocks"
     />
     <Divider />

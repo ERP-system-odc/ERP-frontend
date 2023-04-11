@@ -1,25 +1,15 @@
 import { useState, useEffect } from "react";
-import PerfectScrollbar from "react-perfect-scrollbar";
-import PropTypes from "prop-types";
-import { format } from "date-fns";
-import { Clock as ClockIcon } from "../icons/clock";
-import { Download as DownloadIcon } from "../icons/download";
-import Popup from "./popUp";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import Switch from "@mui/material/Switch";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { standardAPI, producedItemAPI } from "../../utils/apiUtils";
 
 import {
   Avatar,
@@ -56,44 +46,27 @@ export const ShowStandard = ({ items }) => {
     },
 
     onSubmit: (values) => {
-      //alert(JSON.stringify(values, null, 2));
-      fetch("http://localhost:5000/api/product/manage", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: "Bearer " + sessionStorage.getItem("token"),
-        },
-        body: JSON.stringify(values, null, 2),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          //handle data
-          console.log(data);
-
-          if (data.status == 200) {
-            console.log("yaay");
-            location.reload();
-            // Router.push("/customers");
-          } else alert("Incorrect Data");
-        })
-        .catch((error) => {
-          //handle error
-        });
+      const token = sessionStorage.getItem("token");
+      try {
+        const response = producedItemAPI(values, token);
+        console.log("the response is ", response);
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/standard/manage", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-    })
-      .then((response) => response.json())
-
-      .then((data) => setItem1(data.standard));
-    console.log(item1);
+    const token =  sessionStorage.getItem("token")
+    async function fetchData() {
+      try{
+        const response = await  standardAPI(token)
+        setItem1(response.data.standard)
+      }catch(error){
+        console.log(error)
+      }
+    }
+    fetchData();
   }, []);
 
   console.log(item1);
@@ -121,9 +94,7 @@ export const ShowStandard = ({ items }) => {
             >
               {val.standard_name}
             </Typography>
-            <Typography component="p">
-              This is the product Standard. 
-            </Typography>
+            <Typography component="p">This is the product Standard.</Typography>
           </CardContent>
           <CardActions>
             <Button variant="outlined" onClick={handleClickOpen}>

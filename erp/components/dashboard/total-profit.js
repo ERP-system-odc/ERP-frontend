@@ -5,23 +5,6 @@ import { useState, useEffect } from "react";
 
 export const TotalProfit = (props) => {
 
-  const [item1, setItem1] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:5000/api/firmDefinition/chartDefinition", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-    })
-      .then((response) => response.json())
-
-      .then((data) => setItem1(data.income));
-    console.log(item1);
-   
-  }, []);
-
 return(
   <Card {...props}>
     <CardContent>
@@ -42,7 +25,7 @@ return(
             color="textPrimary"
             variant="h4"
           >
-            {item1}
+            {props.data}
           </Typography>
         </Grid>
         <Grid item>
