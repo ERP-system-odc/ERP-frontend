@@ -11,7 +11,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { TextField, Select } from "formik-material-ui";
-import { FormStepper } from "../../pages/FormStepper";
+import { FormStepper } from "./formStepper";
 
 import { itemAPI, addStandardAPI } from "../../utils/apiUtils";
 
