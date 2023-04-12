@@ -52,7 +52,7 @@ const items = [
     title: 'Employees'
   },
   {
-    href: '/test',
+    href: '/settings',
     icon: (<CogIcon fontSize="small" />),
     title: 'Settings'
   },

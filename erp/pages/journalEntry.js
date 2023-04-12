@@ -12,7 +12,7 @@ const Page = () => (
   <>
     <Head>
       <title>
-        Finance | Material Kit
+        Finance | ERP
       </title>
     </Head>
     <Box

@@ -17,10 +17,11 @@ import {
   Button,
   CardActions,
   TextField,
+  accordionDetailsClasses,
 } from "@mui/material";
 import { useFormik } from "formik";
 
-import { stockAPI, soldStockAPI } from "../../utils/apiUtils";
+import { stockAPI, soldStockAPI, updateStockAPI } from "../../utils/apiUtils";
 
 export const AvailableStock = () => {
   const [item1, setItem1] = useState([]);
@@ -32,9 +33,6 @@ export const AvailableStock = () => {
   });
 
   const [variable, setVariable] = useState("");
-  /////////////////////////////////////
-  //////update selling price
-  //////////////////////////////////////
 
   const handleClickOpen = ({ x }) => {
     setVariable(x);
@@ -52,53 +50,29 @@ export const AvailableStock = () => {
     setProduct_selling_price1({ [name]: value });
   };
 
-  const updateClickOpen = (e, { b }) => {
+  const updateClickOpen = async(e, { b }) => {
     e.preventDefault();
-    console.log(b);
-    // console.log(`http://localhost:5000/api/product/manage/${b}`)
-    fetch(`http://localhost:5000/api/product/manage/${b}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-      body: JSON.stringify(product_selling_price1, null, 2),
-    })
-      .then((response) => response.json())
+     const token = sessionStorage.getItem("token");
+      try {
+        const response = await updateStockAPI(product_selling_price1,b, token);
+        // console.log("the response is ", response);
+        setOn(true);
+      } catch (error) {
+        console.log(error);
+      }
 
-      .then((data) => {
-        if (data.status == 200) {
-          console.log("yaay");
-          setOn(true);
-          // location.reload()
-          // Router.push("/customers");
-        } else alert("Incorrect Data");
-      });
   };
-  // const onSubmit=(e)=>{
-  //   e.preventDefault();
-  //   updateClickOpen()
-  // }
 
-  const handleClickSell = ({ a }) => {
-    // alert(`http://localhost:5000/api/product/manage/${a}`)
-    fetch(`http://localhost:5000/api/product/manage/${a}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-    })
-      .then((response) => response.json())
 
-      .then((data) => {
-        if (data.status == 200) {
-          console.log("yaay");
-          setOn(true);
-          //location.reload()
-          // Router.push("/customers");
-        } else alert("Incorrect Data");
-      });
+  const handleClickSell = async({ a }) => {
+     const token = sessionStorage.getItem("token");
+      try {
+        const response = await soldStockAPI(a, token);
+        console.log("the response is ", response);
+        setOn(true);
+      } catch (error) {
+        console.log(error);
+      }
   };
 
   useEffect(() => {
@@ -106,6 +80,7 @@ export const AvailableStock = () => {
     async function fetchData() {
       try{
         const response = await stockAPI(token)
+        console.log("the api stock is ", response)
         setItem1(response.data.foundProduct)
         setOn(false);
       }catch(error){
@@ -113,9 +88,9 @@ export const AvailableStock = () => {
       }
     }
     fetchData();
-  }, [on]);
+  }, []);
 
-  console.log(item1);
+  console.log("the items are",item1);
 
   return (
     <div>
@@ -149,7 +124,7 @@ export const AvailableStock = () => {
           <CardActions>
             <Button
               variant="outlined"
-              onClick={(sold) => handleClickSell({ a: val.id })}
+              onClick={() => handleClickSell({ a: val.id })}
             >
               Sold
             </Button>
@@ -176,7 +151,7 @@ export const AvailableStock = () => {
                     width: "fit-content",
                   }}
                 >
-                  <form onSubmit={console.log(val.id)}>
+                  {/* <form onSubmit={console.log(val.id)}>
                     <TextField
                       name="product_selling_price"
                       margin="normal"
@@ -198,7 +173,7 @@ export const AvailableStock = () => {
                         Produced
                       </Button>
                     </Box>
-                  </form>
+                  </form> */}
                 </Box>
               </DialogContent>
             </Dialog>
