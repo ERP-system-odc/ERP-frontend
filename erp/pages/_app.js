@@ -1,12 +1,14 @@
-import Head from 'next/head';
-import { CacheProvider } from '@emotion/react';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { CssBaseline } from '@mui/material';
-import { ThemeProvider } from '@mui/material/styles';
-import { createEmotionCache } from '../utils/create-emotion-cache';
-import { registerChartJs } from '../utils/register-chart-js';
-import { theme } from '../theme';
+import Head from "next/head";
+import { CacheProvider } from "@emotion/react";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { CssBaseline } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import { createEmotionCache } from "../utils/create-emotion-cache";
+import { registerChartJs } from "../utils/register-chart-js";
+import { theme } from "../theme";
+import { Provider } from "react-redux";
+import store from "../store/store";
 
 registerChartJs();
 
@@ -20,22 +22,15 @@ const App = (props) => {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <title>
-          ERP System
-        </title>
-        <meta
-          name="viewport"
-          content="initial-scale=1, width=device-width"
-        />
+        <title>ERP System</title>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-
-              {
-               getLayout(<Component {...pageProps} />)
-              }
-
+          <Provider store={store}>
+            {getLayout(<Component {...pageProps} />)}
+          </Provider>
         </ThemeProvider>
       </LocalizationProvider>
     </CacheProvider>

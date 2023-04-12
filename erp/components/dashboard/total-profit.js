@@ -1,9 +1,16 @@
 import { Avatar, Card, CardContent, Grid, Typography } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-
-import { useState, useEffect } from "react";
+import { useSelector } from 'react-redux';
 
 export const TotalProfit = (props) => {
+  const { data, loading, error } = useSelector((state) => state.data);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
 return(
   <Card {...props}>
@@ -25,7 +32,7 @@ return(
             color="textPrimary"
             variant="h4"
           >
-            {props.data}
+            {data?.income}
           </Typography>
         </Grid>
         <Grid item>

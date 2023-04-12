@@ -2,19 +2,24 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import { Box, Container, Grid } from "@mui/material";
 import { Budget } from "../components/dashboard/budget";
-import { LatestOrders } from "../components/dashboard/latest-orders";
-import { LatestProducts } from "../components/dashboard/latest-products";
+import { ExpenseList } from "../components/dashboard/expense-list";
+import { StocksList } from "../components/dashboard/stocks-list";
 import { Sales } from "../components/dashboard/sales";
-import { DailySale } from "../components/dashboard/dailysale";
+import { MostSold } from "../components/dashboard/most-sold";
 import { Expenses } from "../components/dashboard/expenses";
 import { TotalProfit } from "../components/dashboard/total-profit";
-import { TrafficByDevice } from "../components/dashboard/traffic-by-device";
+import { PieChartSells } from "../components/dashboard/pie-chart-sells";
 import { DashboardLayout } from "../components/dashboard-layout";
+
+import { useDispatch, useSelector } from 'react-redux';
+import { setData, setLoading, setError } from "../store/reducers/data";
 
 import { dashboardAPI } from "../utils/apiUtils";
 
 const Page = () => {
   const [data1, setData1] = useState(null);
+  const dispatch = useDispatch();
+  const { data, loading, error } = useSelector((state) => state.data);
 
   useEffect(() => {
     const token =  sessionStorage.getItem("token")
@@ -22,14 +27,23 @@ const Page = () => {
       try{
         const response = await dashboardAPI(token)
         setData1(response.data)
+        dispatch(setData(response.data))
       }catch(error){
         console.log(error)
+        dispatch(setError(error))
       }
     }
     fetchData();
   }, []);
 
-  // console.log("the distrubuted dataa is 2 ", data1)
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
     <>
       <Head>
@@ -45,29 +59,29 @@ const Page = () => {
         <Container maxWidth={false}>
           <Grid container spacing={3}>
             <Grid item lg={3} sm={6} xl={3} xs={12}>
-              <Budget data={data1?.capital}/>
+              <Budget />
             </Grid>
             <Grid item xl={3} lg={3} sm={6} xs={12}>
-              <TotalProfit sx={{ height: "100%" }} data={data1?.income}/>
+              <TotalProfit sx={{ height: "100%" }}/>
             </Grid>
             <Grid item xl={3} lg={3} sm={6} xs={12}>
               <Expenses data={data1?.expense}/>
             </Grid>
             <Grid item xl={3} lg={3} sm={6} xs={12}>
-              <DailySale data={data1?.max_sold_product}/>
+              <MostSold />
             </Grid>
 
             <Grid item lg={8} md={12} xl={9} xs={12}>
               <Sales />
             </Grid>
             <Grid item lg={4} md={6} xl={3} xs={12}>
-              <TrafficByDevice sx={{ height: "100%" }}  />
+              <PieChartSells sx={{ height: "100%" }}  />
             </Grid>
             <Grid item lg={4} md={6} xl={3} xs={12}>
-              <LatestProducts sx={{ height: "100%" }} />
+              <StocksList sx={{ height: "100%" }} />
             </Grid>
             <Grid item lg={8} md={12} xl={9} xs={12}>
-              <LatestOrders />
+              <ExpenseList />
             </Grid>
           </Grid>
         </Container>

@@ -4,12 +4,13 @@ import {
   Card,
   CardContent,
   Grid,
+  LinearProgress,
   Typography,
 } from "@mui/material";
-import MoneyIcon from "@mui/icons-material/Money";
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import { useSelector } from 'react-redux';
 
-export const Budget = (props) => {
+export const MostSold = (props) => {
   const { data, loading, error } = useSelector((state) => state.data);
   if (loading) {
     return <div>Loading...</div>;
@@ -25,25 +26,30 @@ export const Budget = (props) => {
         <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
           <Grid item>
             <Typography color="textSecondary" gutterBottom variant="overline">
-              Asset in Cash
+              Most Sold Product
             </Typography>
             <Typography color="textPrimary" variant="h4">
-              {data?.capital}
+              {data?.max_sold_product?.name}
+            </Typography>
+            <Typography color="textSecondary" variant="caption">
+              {data?.max_sold_product?.count}
             </Typography>
           </Grid>
           <Grid item>
             <Avatar
               sx={{
-                backgroundColor: "primary.main",
+                backgroundColor: "warning.main",
                 height: 56,
                 width: 56,
               }}
             >
-              <MoneyIcon />
+              <CurrencyExchangeIcon />
             </Avatar>
           </Grid>
         </Grid>
-       
+        <Box sx={{ pt: 3 }}>
+          <LinearProgress value={75.5} variant="determinate" />
+        </Box>
       </CardContent>
     </Card>
   );

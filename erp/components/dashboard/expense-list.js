@@ -1,5 +1,3 @@
-import { format } from 'date-fns';
-import { v4 as uuid } from 'uuid';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Box,
@@ -11,17 +9,14 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TableSortLabel,
-  Tooltip,
   Typography
 } from '@mui/material';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import { SeverityPill } from '../severity-pill';
 import { useState, useEffect } from 'react';
 import { expenseAPI } from '../../utils/apiUtils';
 
 
-export const LatestOrders = () => {
+export const ExpenseList = () => {
 
   const [item1, setItem1] = useState([]);
   

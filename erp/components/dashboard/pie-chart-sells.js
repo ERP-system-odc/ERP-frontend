@@ -7,7 +7,7 @@ import CheckroomIcon from '@mui/icons-material/Checkroom';
 
 import { dashboardAPI } from '../../utils/apiUtils';
 
-export const TrafficByDevice = (props) => {
+export const PieChartSells = (props) => {
 
   const [item1, setItem1] = useState([]);
   const val=[];
