@@ -6,7 +6,7 @@ import { DashboardLayout } from "../components/dashboard-layout";
 const Page = () => (
   <>
     <Head>
-      <title>Account | Material Kit</title>
+      <title>Account | ERP</title>
     </Head>
     <Box
       component="main"

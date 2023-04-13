@@ -1,26 +1,16 @@
 import { Avatar, Card, CardContent, Grid, Typography } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-
-import { useState, useEffect } from "react";
+import { useSelector } from 'react-redux';
 
 export const TotalProfit = (props) => {
+  const { data, loading, error } = useSelector((state) => state.data);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-  const [item1, setItem1] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:5000/api/firmDefinition/chartDefinition", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-    })
-      .then((response) => response.json())
-
-      .then((data) => setItem1(data.income));
-    console.log(item1);
-   
-  }, []);
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
 return(
   <Card {...props}>
@@ -42,7 +32,7 @@ return(
             color="textPrimary"
             variant="h4"
           >
-            {item1}
+            {data?.income}
           </Typography>
         </Grid>
         <Grid item>

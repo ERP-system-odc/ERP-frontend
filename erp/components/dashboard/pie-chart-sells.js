@@ -1,47 +1,31 @@
+import { useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Box, Card, CardContent, CardHeader, Divider, Typography, useTheme } from '@mui/material';
-import LaptopMacIcon from '@mui/icons-material/LaptopMac';
-import PhoneIcon from '@mui/icons-material/Phone';
-import TabletIcon from '@mui/icons-material/Tablet';
 import IceSkatingIcon from '@mui/icons-material/IceSkating';
 import WatchIcon from '@mui/icons-material/Watch';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 
-import { useState, useEffect } from 'react';
-export const TrafficByDevice = (props) => {
+import { dashboardAPI } from '../../utils/apiUtils';
 
+export const PieChartSells = (props) => {
 
   const [item1, setItem1] = useState([]);
-  const [item2, setItem2] = useState([]);
   const val=[];
   const Name=[];
-  const [both, setBoth]=useState({})
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/firmDefinition/chartDefinition", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-    })
-      .then((response) => response.json())
-
-    .then((data) => {
-      setItem1(data.product_percentages)
-      console.log(data.status)
-      
-  item1.map(a=>val.push(a.percentage))
-      // console.log(data)
-      console.log(data.status)
-       console.log(item1)
-       console.log(val)
-    })
-   // .then((data) => console.log(data.product_percentages))
-   
-   
-  
+    const token =  sessionStorage.getItem("token")
+    async function fetchData() {
+      try{
+        const response = await dashboardAPI(token)
+        setItem1(response.data.product_percentages)
+      }catch(error){
+        console.log(error)
+      }
+    }
+    fetchData();
   }, []);
+
   for(let x=0;x<item1.length;x++){
     val.push(item1[x].percentage)
   }
@@ -49,7 +33,7 @@ export const TrafficByDevice = (props) => {
     Name.push(item1[x].product_name)
   }
 
-  console.log(item1)
+  // console.log(item1)
   const theme = useTheme();
 
   const data = {

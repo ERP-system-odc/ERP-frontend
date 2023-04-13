@@ -13,10 +13,30 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-// import MuiPhoneInput from 'material-ui-phone-number';
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
+import { signupAPI } from "../utils/apiUtils";
 
 const Register = () => {
+  const handleSignup = async (data) => {
+    // console.log(data)
+    try {
+      const response = await signupAPI(data);
+      // console.log(response)
+      if (response.data.status == 200) {
+        alert(response.data.message);
+        Router.push("/");
+      } else if (response.data.status == 302) {
+        alert(response.data.message);
+        location.reload();
+      } else if (response.data.status == 400) {
+        alert(response.data.message);
+        location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       full_name: "",
@@ -25,7 +45,6 @@ const Register = () => {
       phone_number: "+251",
       password: "",
       confirm_password: "",
-      // policy: false
     },
     validationSchema: Yup.object({
       full_name: Yup.string().max(255).required("Full name is required"),
@@ -39,45 +58,10 @@ const Register = () => {
       confirm_password: Yup.string()
         .max(255)
         .required("Please confirmPassword "),
-      // policy: Yup
-      //   .boolean()
-      //   .oneOf(
-      //     [true],
-      //     'This field must be checked'
-      //   )
     }),
-    // onSubmit: () => {
-    //   Router
-    //     .push('/')
-    //     .catch(console.error);
-    // }
+ 
     onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
-      fetch("http://localhost:5000/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values, null, 2),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          //handle data
-          console.log(data);
-
-          if (data.status == 200) {
-            alert(data.message);
-            Router.push("/");
-          } else if (data.status == 302) {
-            alert(data.message);
-            location.reload();
-          } else if (data.status == 400) {
-            alert(data.message);
-            location.reload();
-          }
-        })
-
-        .catch((error) => {
-          //handle error
-        });
+      handleSignup(values);
     },
   });
 
@@ -146,7 +130,7 @@ const Register = () => {
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               fullWidth
-              inputProps={{ maxLength: 13,minLength: 13  }}
+              inputProps={{ maxLength: 13, minLength: 13 }}
               type="tel"
               value={formik.values.phone_number}
               variant="outlined"
@@ -183,38 +167,6 @@ const Register = () => {
               value={formik.values.confirm_password}
               variant="outlined"
             />
-            {/* <Box
-              sx={{
-                alignItems: 'center',
-                display: 'flex',
-                ml: -1
-              }}
-            >
-              <Checkbox
-                checked={formik.values.policy}
-                name="policy"
-                onChange={formik.handleChange}
-              />
-              <Typography
-                color="textSecondary"
-                variant="body2"
-              >
-                I have read the
-                {' '}
-                <NextLink
-                  href="#"
-                  passHref
-                >
-                  <Link
-                    color="primary"
-                    underline="always"
-                    variant="subtitle2"
-                  >
-                    Terms and Conditions
-                  </Link>
-                </NextLink>
-              </Typography>
-            </Box> */}
             {Boolean(formik.touched.policy && formik.errors.policy) && (
               <FormHelperText error>{formik.errors.policy}</FormHelperText>
             )}

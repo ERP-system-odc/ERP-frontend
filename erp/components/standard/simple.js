@@ -11,7 +11,9 @@ import {
   MenuItem,
 } from "@mui/material";
 import { TextField, Select } from "formik-material-ui";
-import { FormStepper } from "./FormStepper";
+import { FormStepper } from "./formStepper";
+
+import { itemAPI, addStandardAPI } from "../../utils/apiUtils";
 
 export const Simple = () => {
   const [item1, setItem1] = useState([]);
@@ -19,16 +21,16 @@ export const Simple = () => {
   const parameters1 = { inventory_name: "", inventory_quantity: "" };
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/inventory/manage", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-    })
-      .then((response) => response.json())
-
-      .then((data) => setItem1(data.data));
+    const token = sessionStorage.getItem("token");
+    async function fetchData() {
+      try {
+        const response = await itemAPI(token);
+        setItem1(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
   }, []);
 
   return (
@@ -44,31 +46,13 @@ export const Simple = () => {
               standard_items: [parameters1],
             }}
             onSubmit={async (values, actions) => {
-              console.log(JSON.stringify(values, null, 2));
-
-              fetch("http://localhost:5000/api/standard/manage", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  authorization: "Bearer " + sessionStorage.getItem("token"),
-                },
-                body: JSON.stringify(values, null, 2),
-              })
-                .then((response) => response.json())
-                .then((data) => {
-                  //handle data
-                  console.log(data);
-
-                  if (data.status == 200) {
-                    console.log("yaay");
-                    location.reload();
-                    alert("Added Successfully!");
-                    // Router.push("/customers");
-                  } else alert("Incorrect Data");
-                })
-                .catch((error) => {
-                  //handle error
-                });
+              const token = sessionStorage.getItem("token");
+              try {
+                const response = addStandardAPI(values, token);
+                alert("Added Successfully!");
+              } catch (error) {
+                console.log(error);
+              }
             }}
           >
             {({ values }) => (

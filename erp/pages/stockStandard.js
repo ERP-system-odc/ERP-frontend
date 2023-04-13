@@ -2,12 +2,12 @@ import Head from 'next/head';
 import { Box, Container } from '@mui/material';
 
 import { DashboardLayout } from '../components/dashboard-layout';
-import { Simple } from './simple'
+import { Simple } from '../components/standard/simple'
 const Page = () => (
   <>
     <Head>
       <title>
-        Add Standard | Material Kit
+        Add Standard | ERP
       </title>
     </Head>
     <Box

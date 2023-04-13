@@ -6,7 +6,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { Bell as BellIcon } from '../icons/bell';
 import { UserCircle as UserCircleIcon } from '../icons/user-circle';
-import { Users as UsersIcon } from '../icons/users';
 import { AccountPopover } from './account-popover';
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({

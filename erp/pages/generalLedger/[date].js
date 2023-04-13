@@ -1,18 +1,13 @@
 import { useState, useEffect } from "react";
-import PerfectScrollbar from "react-perfect-scrollbar";
-import PropTypes from "prop-types";
-import { format } from "date-fns";
 import {
   Button,
   Avatar,
   Box,
   Card,
-  Checkbox,
   Table,
   TableBody,
   TableCell,
   TableHead,
-  TablePagination,
   TableRow,
   Typography,
   Divider,
@@ -20,41 +15,30 @@ import {
 
 import { useRouter } from "next/router";
 import Router from "next/router";
+import { generalLedgerAPI } from "../../utils/apiUtils";
 
 const ItemsListResults = () => {
   const [item1, setItem1] = useState([]);
   const [item2, setItem2] = useState([]);
-  const [item3, setItem3] = useState([]);
-  const [item4, setItem4] = useState([]);
-  const [limit, setLimit] = useState(10);
-  const [page, setPage] = useState(0);
-  // const a='2022-11-08'
 
   const router = useRouter();
-  console.log(router.query);
-  const a = router.query.tip;
-  const b = router.query.tip1;
-  console.log(b);
+  const a = router.query.date;
+  const b = router.query.to;
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/generalLedger/manage/${a}/${b}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-    })
-      .then((response) => response.json())
-
-      .then((data) => {
-        setItem1(data.asset_general_ledger),
-          setItem2(data.expense_general_ledger)
-          setItem3(data.liabilityGeneralLedge),
-          setItem4(data.capitalGeneralLedger);
-      });
+    const token =  sessionStorage.getItem("token")
+    async function fetchData() {
+      try{
+        const response = await generalLedgerAPI(a,b, token)
+        setItem1(response.data.asset_general_ledger)
+        setItem2(response.data.expense_general_ledger)
+      }catch(error){
+        console.log(error)
+      }
+    }
+    fetchData();
   }, []);
 
-  console.log(item1);
   return (
     <Card sm={{ padding: 3 }}>
       <Box
@@ -117,16 +101,6 @@ const ItemsListResults = () => {
                 <TableCell>{val.description}</TableCell>
               </TableRow>
             ))}
-            <TableRow>
-              <TableCell />
-              <TableCell />
-              <TableCell>
-                {/* <Typography>Asset Final Balance :</Typography> */}
-              </TableCell>
-              <TableCell>
-                {/* <Typography>{item3}</Typography> */}
-              </TableCell>
-            </TableRow>
           </TableBody>
         </Table>
       </Box>
@@ -168,16 +142,6 @@ const ItemsListResults = () => {
                 <TableCell>{val.description}</TableCell>
               </TableRow>
             ))}
-            <TableRow>
-              <TableCell />
-              <TableCell />
-              <TableCell>
-                {/* <Typography>Expense Final Balance :</Typography> */}
-              </TableCell>
-              <TableCell>
-                {/* <Typography>{item4}</Typography> */}
-              </TableCell>
-            </TableRow>
           </TableBody>
         </Table>
       </Box>

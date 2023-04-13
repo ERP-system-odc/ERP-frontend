@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import PropTypes from "prop-types";
-import { format } from "date-fns";
+
 import {
   Avatar,
   Box,
@@ -15,51 +14,25 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { getInitials } from "../../utils/get-initials";
 
-export const getStaticProps = async () => {
-  const res = await fetch("http://localhost:5000/api/inventory/manage", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: "Bearer " + sessionStorage.getItem("token"),
-    }
-  });
-  const data = await res.json();
+import { expenseAPI } from "../../utils/apiUtils";
 
-  return {
-    props: { items: data },
-  };
-};
 
 export const ListExpense = () => {
   const [item1, setItem1] = useState([]);
-  
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/expense/manage", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-     
-    })
-    .then(response => response.json())
-        
-    .then(data => setItem1(data.foundExpense))
-    
-  },[])
-
-
-
-  const handleLimitChange = (event) => {
-    setLimit(event.target.value);
-  };
-
-  const handlePageChange = (event, newPage) => {
-    setPage(newPage);
-  };
+    const token = sessionStorage.getItem("token");
+    async function fetchData() {
+      try {
+        const response = await expenseAPI(token);
+        setItem1(response.data.foundExpense);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, []);
 
   return (
     <Card>
@@ -72,18 +45,11 @@ export const ListExpense = () => {
                 <TableCell>expense_amount</TableCell>
                 <TableCell>created_at</TableCell>
                 <TableCell>updated_at</TableCell>
-           
               </TableRow>
             </TableHead>
             <TableBody>
-              {
-              
-              item1.map(val => (
-                <TableRow
-                  hover
-                  key={val.id}
-                 
-                >
+              {item1.map((val) => (
+                <TableRow hover key={val.id}>
                   <TableCell>
                     <Box
                       sx={{
@@ -100,7 +66,6 @@ export const ListExpense = () => {
 
                   <TableCell>{val.created_at}</TableCell>
                   <TableCell>{val.updated_at}</TableCell>
-                  
                 </TableRow>
               ))}
             </TableBody>

@@ -13,6 +13,8 @@ import {
   TextField
 } from '@mui/material';
 
+import { addExpenseAPI } from '../../utils/apiUtils';
+
 
 export const AddExpense = () => {
 
@@ -32,35 +34,15 @@ export const AddExpense = () => {
 
 
     onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
-     
-      fetch(
-        "http://localhost:5000/api/expense/manage",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "authorization": "Bearer "+sessionStorage.getItem("token"),
-          },
-          body: JSON.stringify(values, null, 2),
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          //handle data
-          console.log(data);
+      const token = sessionStorage.getItem("token");
+      try {
+        const response = addExpenseAPI(values, token);
+        console.log("the response is ", response);
+        location.reload()
+      } catch (error) {
+        console.log(error);
+      }
 
-          if (data.status == 200) {
-            console.log("yaay")
-            location.reload()
-            // Router.push("/customers");
-          } else alert("Incorrect Data");
-        })
-        .catch((error) => {
-          //handle error
-        });
-    
-      
     },
 });
 
